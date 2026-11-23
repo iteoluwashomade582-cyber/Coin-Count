@@ -15,32 +15,38 @@ coin = {
 
 }
 
-
+finished = False
 
 print(f"Valid coins are {accepted}. 200 = £2 and 100 = £1")
 
+option = input("Do you want to look at the number of bags checked and their values or count coins(for number of bags put 1 and to use the coin count feature put 2): " )
 
 
+if option == "2":
+    while finished == False:
+        name = input("Enter your name: ").title()
+        coin_type = input("Enter the type of coin you are using: ")
 
+    while coin_type not in accepted:
+        print("Invalid coin, please try again")
+        coin_type = input("Enter the type of coin you are using: ")
 
-name = input("Enter your name: ").title()
-coin_type = input("Enter the type of coin you are using: ")
+    weight = int(input("Enter weight of the bag: "))
 
-while coin_type not in accepted:
-    print("Invalid coin, please try again")
-    coin_type = input("Enter the type of coin you are using: ")
+    # Validating the weight
+    if weight != coin[coin_type][2]:
+        if weight > coin[coin_type][2]:
+            remaining = weight - coin[coin_type][2]
+            coin_num = remaining / coin[coin_type][3]
+            print(f"You need to remove {coin_num} more coins")
+        else:    
+            remaining = coin[coin_type][2] - weight
+            coin_num = remaining / coin[coin_type][3]
+            print(f"You need to add {coin_num} more coins")
 
-weight = int(input("Enter weight of the bag: "))
-
-if weight != coin[coin_type][2]:
-    if weight > coin[coin_type][2]:
-        remaining = weight - coin[coin_type][2]
-        coin_num = remaining / coin[coin_type][3]
-        print(f"You need to remove {coin_num} more coins")
-    else:    
-        remaining = coin[coin_type][2] - weight
-        coin_num = remaining / coin[coin_type][3]
-        print(f"You need to add {coin_num} more coins")
+    done = input("Are you finished?: ")
+    if done == "yes" or done == "Yes":
+        finished = True
 
 
 
