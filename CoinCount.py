@@ -15,8 +15,8 @@ coin = {
 
 }
 
-
-
+f = open("CoinCount.txt", "w")
+f.close()
 
 
 records = {
@@ -45,7 +45,8 @@ print(f"Valid coins are {accepted}. 200 = £2 and 100 = £1")
 option = input("Do you want to look at the number of bags checked and their values or count coins(for number of bags put 1 and to use the coin count feature put 2): " )
 
 while finished == False:
-    
+    name = ""
+
     if option == "2":
         name = input("Enter your name: ").title()
         coin_type = input("Enter the type of coin you are using: ")
@@ -74,35 +75,44 @@ while finished == False:
                 bagschecked += 1
             else:
                 bagschecked = 1
+    else:
+        print("Correct weight of the bag.")
+        if name in records:
+            bagschecked += 1
+            bagscheckedcorrect += 1
         else:
-            print("Correct weight of the bag.")
-            if name in records:
-                bagschecked += 1
-                bagscheckedcorrect += 1
-            else:
-                bagschecked = 1
-                bagscheckedcorrect = 1
+            bagschecked = 1
+            bagscheckedcorrect = 1
+    if bagschecked > 0 and bagscheckedcorrect > 0:
+        percentage = (bagscheckedcorrect / bagschecked) * 100
 
-    percentage = (bagscheckedcorrect / bagschecked) * 100
+    
+    if name in records:
+        records[name] = [bagschecked, percentage / bagscheckedcorrect] 
+    else:
+        records[name] = [bagschecked, percentage]
+    
+    
 
-    if name in records:        
-        records.update({name: [bagschecked, percentage, "£10" ]  })
-    
-    
-    
+
+    f = open("CoinCount.txt", "r")
     for line in lines:
         part = line.strip("\n").split(",")
         records[part[0]] = [part[1].strip(), part[2].strip()]
     
     
+    if name in open("CoinCount.txt", "r"):
+        f = open("CoinCount.txt", "a")
+        for record in records:
+            f.write(f"{name} {str(records[record])}\n")
+        f.close()
+    else:
+        f = open("CoinCount.txt", "w")
+        for record in records:
+            f.write(f"{record} {str(records[record])}\n")
+        f.close()
 
-    
-    f = open("CoinCount.txt", "w")
-    f.write(str(records))
-    f.close()
-    
-
-
+    print(records)
 
     done = input("Are you finished?: ")
     if done == "yes" or done == "Yes":
