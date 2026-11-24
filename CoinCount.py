@@ -32,8 +32,11 @@ print(lines)
 
 print(records)
 
+accuracy = 0
+bagschecked = 0
+bagscheckedcorrect = 0
 
-
+percentage = 0
 
 finished = False
 
@@ -59,17 +62,32 @@ while finished == False:
             remaining = weight - coin[coin_type][2]
             coin_num = remaining // coin[coin_type][3]
             print(f"You need to remove {coin_num} more coins")
-        else:    
+            if name in records:
+                bagschecked += 1
+            else:
+                bagschecked = 1
+        elif coin[coin_type][2] > weight:    
             remaining = coin[coin_type][2] - weight
             coin_num = remaining // coin[coin_type][3]
             print(f"You need to add {coin_num} more coins")
-            
-            
-    
+            if name in records:
+                bagschecked += 1
+            else:
+                bagschecked = 1
+        else:
+            print("Correct weight of the bag.")
+            if name in records:
+                bagschecked += 1
+                bagscheckedcorrect += 1
+            else:
+                bagschecked = 1
+                bagscheckedcorrect = 1
 
-    '''
-    records.update({name: [10, "50%", "£10" ]  })
-    '''
+    percentage = (bagscheckedcorrect / bagschecked) * 100
+
+    if name in records:        
+        records.update({name: [bagschecked, percentage, "£10" ]  })
+    
     
     
     for line in lines:
@@ -99,7 +117,6 @@ f = open("CoinCount.txt", "w")
     else:
         f.write(name, count)
 '''
-
 
 
 
